@@ -367,6 +367,7 @@ add dont-require-permissions=no name=tg_cmd_eHotspot policy=\
     ip hotspot enable hotspot\r\
     \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_id=(GANTI)&text=Hotspot Enable\" k\
     eep-result=no"
+/system scheduler 
 add interval=20s name="Telegram" on-event=\
     "/system script run tg_getUpdates" policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \

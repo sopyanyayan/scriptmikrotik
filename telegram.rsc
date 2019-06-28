@@ -1,15 +1,10 @@
-# jun/25/2019 05:05:01 by RouterOS 6.44.1
-# software id = 2C0W-5XGQ
-#
-# model = 1100AHx2
 /system script
-
-add dont-require-permissions=no name=tg_config policy=read \
+add dont-require-permissions=no name=tg_config owner=admin policy=read \
     source=":put \"tg: Load config\"\r\
     \n\r\
     \n:local config {\r\
     \n\r\
-    \n\"botAPI\"=\"552750641:AAGlWdQJkfAIOZzbyGXlbst6_NJXk-39CDU\";\r\
+    \n\"botAPI\"=\"(GANTI)\";\r\
     \n\"defaultChatID\"=\"(GANTI)\";\r\
     \n\"trusted\"=\"(GANTI)\";\r\
     \n\"storage\"=\"\";\r\
@@ -17,7 +12,7 @@ add dont-require-permissions=no name=tg_config policy=read \
     \n}\r\
     \n\r\
     \nreturn \$config"
-add dont-require-permissions=no name=tg_getUpdates policy=read \
+add dont-require-permissions=no name=tg_getUpdates owner=admin policy=read \
     source=":global TGLASTMSGID\r\
     \n:global TGLASTUPDID\r\
     \n\r\
@@ -123,7 +118,7 @@ add dont-require-permissions=no name=tg_getUpdates policy=read \
     \n:put \"Try to invoke external script tg_cmd_\$cmd\"\r\
     \n:local script [:parse [/system script get \"tg_cmd_\$cmd\" source]]\r\
     \n\$script params=\$params chatid=\$chatid from=\$name"
-add dont-require-permissions=no name=func_fetch policy=\
+add dont-require-permissions=no name=func_fetch owner=admin policy=\
     ftp,read,write,policy,test source="#######################################\
     ##################\r\
     \n# Wrapper for /tools fetch\r\
@@ -195,7 +190,7 @@ add dont-require-permissions=no name=func_fetch policy=\
     \n#:put \$content\r\
     \nif (\$content~\"finished\") do={:return \"success\"}\r\
     \n:return \$FETCHRESULT"
-add dont-require-permissions=no name=tg_getkey policy=read \
+add dont-require-permissions=no name=tg_getkey owner=admin policy=read \
     source=":local cur 0\r\
     \n:local lkey [:len \$key]\r\
     \n:local res \"\"\r\
@@ -222,7 +217,7 @@ add dont-require-permissions=no name=tg_getkey policy=read \
     \n } \r\
     \n}\r\
     \n:return \$res"
-add dont-require-permissions=no name=tg_sendMessage policy=read \
+add dont-require-permissions=no name=tg_sendMessage owner=admin policy=read \
     source=":local fconfig [:parse [/system script get tg_config source]]\r\
     \n\r\
     \n:local cfg [\$fconfig]\r\
@@ -240,7 +235,7 @@ add dont-require-permissions=no name=tg_sendMessage policy=read \
     \n:local logfile (\$tgStorage.\"tg_fetch_log.txt\")\r\
     \n\r\
     \n/tool fetch url=\$url keep-result=no"
-add dont-require-permissions=no name=tg_cmd_cpu policy=read \
+add dont-require-permissions=no name=tg_cmd_cpu owner=admin policy=read \
     source=":local send [:parse [/system script get tg_sendMessage source]]\r\
     \n:local hotspot [:len [/ip hotspot active find]]\r\
     \n\r\
@@ -259,7 +254,7 @@ add dont-require-permissions=no name=tg_cmd_cpu policy=read \
     \n \r\
     \n\$send chat=\$chatid text=\$text mode=\"Markdown\"\r\
     \n:return true"
-add dont-require-permissions=no name=tg_cmd_hi policy=read \
+add dont-require-permissions=no name=tg_cmd_hi owner=admin policy=read \
     source=":local send [:parse [/system script get tg_sendMessage source]]\r\
     \n\r\
     \n:put \$params\r\
@@ -274,15 +269,16 @@ add dont-require-permissions=no name=tg_cmd_hi policy=read \
     \n/hotspot%0A\\\r\
     \n/ping%0A\\\r\
     \n/public%0A\\\r\
+    \n/PoeAdd%0A\\\r\
     \n/dialing%0A\\\r\
     \n/eHotspot%0A\\\r\
     \n/dHotspot%0A\\\r\
+    \n/force%0A\\\r\
     \n/reboot\"\r\
     \n \r\
     \n\$send chat=\$chatid text=\$text mode=\"Markdown\"\r\
     \n:return true"
-
-add dont-require-permissions=no name=tg_cmd_hotspot policy=read \
+add dont-require-permissions=no name=tg_cmd_hotspot owner=admin policy=read \
     source=":local send [:parse [/system script get tg_sendMessage source]]\r\
     \n:local hotspot [:len [/ip hotspot active find]]\r\
     \n\r\
@@ -295,7 +291,7 @@ add dont-require-permissions=no name=tg_cmd_hotspot policy=read \
     \n \r\
     \n\$send chat=\$chatid text=\$text mode=\"Markdown\"\r\
     \n:return true"
-add dont-require-permissions=no name=tg_cmd_public policy=read \
+add dont-require-permissions=no name=tg_cmd_public owner=admin policy=read \
     source=":local public;\r\
     \n\
     \n:local status;\
@@ -306,11 +302,9 @@ add dont-require-permissions=no name=tg_cmd_public policy=read \
     \n\
     \n:set ddns [/ip cloud get dns-name];\r\
     \n\
-    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_id=(GANTI)&text=DDNS : \$ddns : IP\
-    \_Public : \$public \" keep-result=no"
-add dont-require-permissions=no name=tg_cmd_reboot policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=/system reboot
-add dont-require-permissions=no name=tg_cmd_ping policy=\
+    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_\
+    id=(GANTI)&text=DDNS : \$ddns : IP Public : \$public \" keep-result=no"
+add dont-require-permissions=no name=tg_cmd_ping owner=admin policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":\
     local send [:parse [/system script get tg_sendMessage source]]\r\
     \n:put \$params\r\
@@ -349,28 +343,38 @@ add dont-require-permissions=no name=tg_cmd_ping policy=\
     \nLog : _\$logmsg_\"\r\
     \n\$send chat=\$chatid text=\$text mode=\"Markdown\"\r\
     \n:return true"
-add dont-require-permissions=no name=tg_cmd_dialing policy=\
-    read,write source="/tool fetch url=\"https://api.telegram.org/bot552750641\
-    :AAGlWdQJkfAIOZzbyGXlbst6_NJXk-39CDU/sendMessage\?chat_id=(GANTI)&text=D\
-    ialing....\" keep-result=no\r\
+add dont-require-permissions=no name=tg_cmd_dialing owner=admin policy=\
+    read,write source="/tool fetch url=\"https://api.telegram.org/bot(GANTI)/s\
+    endMessage\?chat_id=(GANTI)&text=Dialing....\" keep-result=no\r\
     \n:delay 1\r\
     \n/interface pppoe-client enable pppoe-indihome\r\
     \n:delay 5\r\
     \n/ip cloud force-update"
-add dont-require-permissions=no name=tg_cmd_dHotspot policy=\
+add dont-require-permissions=no name=tg_cmd_dHotspot owner=admin policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="/\
     ip hotspot disable hotspot\r\
-    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_id=(GANTI)&text=Hotspot Disable\" \
-    keep-result=no"
-add dont-require-permissions=no name=tg_cmd_eHotspot policy=\
+    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_\
+    id=(GANTI)&text=Hotspot Disable\" keep-result=no"
+add dont-require-permissions=no name=tg_cmd_eHotspot owner=admin policy=\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="/\
     ip hotspot enable hotspot\r\
-    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_id=(GANTI)&text=Hotspot Enable\" k\
-    eep-result=no"
-    
-/system scheduler 
-
-add interval=20s name="Telegram" on-event=\
-    "/system script run tg_getUpdates" policy=\
-    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
+    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_\
+    id=(GANTI)&text=Hotspot Enable\" keep-result=no"
+add dont-require-permissions=no name=tg_cmd_force owner=admin policy=\
+    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source="/\
+    ip cloud force-update\r\
+    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_\
+    id=(GANTI)&text=Force Update DDNS\" keep-result=no"
+add dont-require-permissions=no name=tg_cmd_PoeAdd owner=admin policy=\
+    ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon source=":\
+    local satu ([/interface pppoe-client monitor pppoe-indihome as-value]-> st\
+    atus);\r\
+    \n/tool fetch url=\"https://api.telegram.org/bot(GANTI)/sendMessage\?chat_\
+    id=(GANTI)&text=\$satu\" keep-result=no\r\
+    \n\r\
+    \n\r\
+    \n"
+/system scheduler
+add interval=20s name=Telegram on-event="/system script run tg_getUpdates" \
+    policy=ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
     start-time=startup

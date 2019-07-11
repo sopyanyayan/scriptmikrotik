@@ -1,5 +1,7 @@
 # model = 1100AHx2
-# Panduan instal http://labkom.co.id
+# Panduan instal https://labkom.co.id/mikrotik/monitoring-mikrotik-dengan-telegram-interaktif-tanpa-pemograman-php
+# Manajemen hotspot https://labkom.co.id/mikrotik/membuat-dan-mengatur-user-hotspot-mikrotik-dengan-bot-telegram-tanpa-php
+# Membuat rule dengan bot https://labkom.co.id/mikrotik/membuat-firewall-rule-pada-mikrotik-dengan-menggunakan-bot-telegram-tanpa-php
 /system script
 add dont-require-permissions=no name=tg_getUpdates owner=yayan policy=read \
     source=":global TGLASTMSGID\r\
